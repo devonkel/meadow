@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/devonkel/meadow#readme",
   "dependencies": {
+    "express": "^4.13.1",
     "express-handlebars": "^2.0.1"
   }
 }
