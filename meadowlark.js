@@ -13,12 +13,35 @@ app.set('port', process.env.PORT || 3100);
 
 app.use(express.static(__dirname + '/public'));
 
+app.use(function(req, res, next) {
+    res.locals.showTests = app.get('env') != 'production' &&
+        req.query.test === '1';
+    next();
+});
+
+app.get('/tours/hood-river', function(req, res){
+	res.render('tours/hood-river');
+});
+
+app.get('/tours/request-group-rate', function(req, res){
+  res.render('tours/request-group-rate');
+});
+
 app.get('/', function(req, res){
     res.render('home');
 });
+app.get('/home', function(req, res){
+    res.render('home');
+});
+app.get('/contacts', function(req, res) {
+    res.render('contacts');
+});
 
 app.get('/about', function(req, res){
-    res.render('about', { fortune: fortune.getFortune()});
+    res.render('about', {
+        fortune: fortune.getFortune(),
+        pageTestScript: '/qa/tests-about.js'
+    });
 });
 
 // custom 404 page
