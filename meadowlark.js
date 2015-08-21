@@ -23,15 +23,15 @@ function getWeatherData(){
   return {
     locations: [
       {
-        name: 'Portland',
-        forecastUrl: 'http://www.wunderground.com/US/OR/Portland.html',
+        name: 'Frisco, TX',
+        forecastUrl: 'http://www.wunderground.com/q/zmw:75035.1.99999?sp=KTXFRISC55',
         iconUrl: 'http://icons-ak.wxug.com/i/c/k/cloudy.gif',
         weather: 'Overcast',
         temp: '54.1 F (12.3 C)',
       },
       {
-        name: 'Bend',
-        forecastUrl: 'http://www.wunderground.com/US/OR/Bend.html',
+        name: 'New Oreleans, LA',
+        forecastUrl: 'http://www.wunderground.com/cgi-bin/findweather/getForecast?query=new+orleans',
         iconUrl: 'http://icons-ak.wxug.com/i/c/k/partlycloudy.gif',
         weather: 'Partly Cloudy',
         temp: '55.0 F (12.8 C)',
