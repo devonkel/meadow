@@ -38,7 +38,7 @@ function getWeatherData(){
         temp: '54.1 F (12.3 C)',
       },
       {
-        name: 'New Oreleans, LA',
+        name: 'New Orleans, LA',
         forecastUrl: 'http://www.wunderground.com/cgi-bin/findweather/getForecast?query=new+orleans',
         iconUrl: 'http://icons-ak.wxug.com/i/c/k/partlycloudy.gif',
         weather: 'Partly Cloudy',
@@ -68,6 +68,19 @@ app.get('/headers', function(req,res){
 	for(var name in req.headers)
 		s += name + ': ' + req.headers[name] + '\n';
 		res.send(s);
+});
+
+app.get('/nursery-rhyme', function(req, res){
+	res.render('nursery-rhyme');
+});
+
+app.get('/data/nursery-rhyme', function(req, res){
+  res.json({
+  	animal: 'squirrel',
+    bodyPart: 'tail',
+    adjective: 'bushy',
+    noun: 'heck',
+	});
 });
 
 app.get('/tours/hood-river', function(req, res){
