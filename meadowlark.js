@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 
 var app = express();
 
@@ -21,7 +22,10 @@ app.set('port', process.env.PORT || 3100);
 
 app.use(express.static(__dirname + '/public'));
 
-app.use(require('body-parser')());
+// app.use(require('body-parser')());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 app.get('/newsletter', function(req, res){
 // we will learn about CSRF later...for now, we just
