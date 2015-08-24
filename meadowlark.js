@@ -70,6 +70,10 @@ app.get('/headers', function(req,res){
 		res.send(s);
 });
 
+app.get('/jquery-test', function(req, res){
+	res.render('jquery-test');
+});
+
 app.get('/nursery-rhyme', function(req, res){
 	res.render('nursery-rhyme');
 });
