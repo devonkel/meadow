@@ -1,9 +1,9 @@
-var express = require('express');
-var bodyParser = require('body-parser');
+var express = require('express'),
+		jqupload = require('jquery-file-upload-middleware'),
+    fortune = require("./lib/fortune.js"),
+		bodyParser = require('body-parser');
 
 var app = express();
-
-var fortune = require("./lib/fortune.js");
 
 var handlebars = require('express-handlebars').create({
 	defaultLayout: 'main',
@@ -40,6 +40,18 @@ app.post('/contest/vacation-photo/:year/:month', function(req, res){
 		console.log(files);
     res.redirect(303, '/thank-you');
   });
+});
+
+app.use('/upload', function(req, res, next){
+	var now = Date.now();
+	jqupload.fileHandler({
+		uploadDir: function(){
+			return __dirname + '/public/uploads/' + now;
+		},
+		uploadUrl: function(){
+			return '/uploads/' + now;
+		},
+  })(req, res, next);
 });
 
 // app.use(require('body-parser')());
