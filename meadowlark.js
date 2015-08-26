@@ -1,9 +1,13 @@
 var express = require('express'),
 		jqupload = require('jquery-file-upload-middleware'),
     fortune = require("./lib/fortune.js"),
+		// bootstrap = require('bootstrap'),
 		bodyParser = require('body-parser');
+		// cookieParser = require('cookie-parser');
 
 var app = express();
+var session = require('express-session');
+var credentials = require('./credentials.js');
 
 var handlebars = require('express-handlebars').create({
 	defaultLayout: 'main',
@@ -15,12 +19,32 @@ var handlebars = require('express-handlebars').create({
 		}
 	}
 });
+
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
 app.set('port', process.env.PORT || 3100);
 
 app.use(express.static(__dirname + '/public'));
+
+// app.use(require('cookie-parser')(credentials.cookieSecret));
+// app.use(cookieParser(credentials.cookieSecret));
+
+// app.use(require('express-session')());
+app.use(session({
+  secret: credentials.cookieSecret,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
+
+app.use(function(req, res, next){
+	// if there's a flash message, transfer
+	// it to the context, then clear it
+	res.locals.flash = req.session.flash;
+	delete req.session.flash;
+	next();
+});
 
 var formidable = require('formidable');
 app.get('/contest/vacation-photo',function(req,res){
@@ -62,7 +86,7 @@ app.use(bodyParser.urlencoded({
 app.get('/newsletter', function(req, res){
 // we will learn about CSRF later...for now, we just
 // provide a dummy value
-	res.render('newsletter', { csrf: 'CSRF token goes here' });
+	res.render('newsletter', { csrf: 'Mahone' });
 });
 
 app.post('/process', function(req, res){

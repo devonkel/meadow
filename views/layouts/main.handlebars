@@ -6,34 +6,59 @@
 			<link rel="stylesheet" type="text/css" href="/vendor/mocha.css">
 		{{/if}}
 		{{{_sections.head}}}
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css"> -->
+		<style>
+			body {
+					padding-top: 50px;
+					padding-bottom: 20px;
+			}
+		</style>
+		<!-- <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap-theme.min.css"> -->
+		<link rel="stylesheet" href="/css/main.css">
 	</head>
 	<body>
 		<header>
 			<img src="/img/lightbulb.png" alt="Meadowlark Travel Logo">
 		  <a href="home">Home</a> |
 			<a href="about">About</a> |
+			<a href="newsletter">Newsletter</a> |
 			<a href="contacts">Contacts</a>
 		</header>
+		<div class="container">
+			{{#if flash}}
+			  <div class="alert alert-dismissible alert-{{flash.type}}">
+			    <button type="button" class="close"
+			      data-dismiss="alert" aria-hidden="true">&times;
+			    </button>
+			    <strong>{{flash.intro}}</strong>
+			    {{{flash.message}}}
+			  </div>
+			{{/if}}
+		</div>
+
 		{{{body}}}
-		<script type="text/javascript" src="//code.jquery.com/jquery-2.0.2.min.js"></script>
+		<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script>window.jQuery || document.write('<script src="/vendor/js/jquery-2.1.1.min.js"><\/script>')</script>
 		{{{_sections.jquery}}}
-		{{#if showTests}}
-			<div id="mocha"></div>
-			<script type="text/javascript" src="/vendor/mocha.js"></script>
-			<script type="text/javascript" src="/vendor/chai.js"></script>
-			<script>
-				mocha.ui('tdd');
-				var assert = chai.assert;
-			</script>
-			<script type="text/javascript" src="/qa/tests-global.js"></script>
-			{{#if pageTestScript}}
-				<script type="text/javascript" src="{{pageTestScript}}"></script>
+			{{#if showTests}}
+				<div id="mocha"></div>
+				<script type="text/javascript" src="/vendor/mocha.js"></script>
+				<script type="text/javascript" src="/vendor/chai.js"></script>
+				<script>
+					mocha.ui('tdd');
+					var assert = chai.assert;
+				</script>
+				<script type="text/javascript" src="/qa/tests-global.js"></script>
+				{{#if pageTestScript}}
+					<script type="text/javascript" src="{{pageTestScript}}"></script>
+				{{/if}}
+				<script type="text/javascript">
+					mocha.run();
+				</script>
 			{{/if}}
-			<script type="text/javascript">
-				mocha.run();
-			</script>
-		{{/if}}
 	</body>
 	<footer>
 		<h5>Meadowlark Travel</br>
@@ -42,5 +67,6 @@
 		</h5>
 		<small><script type="text/javascript" src="http://www.brainyquote.com/link/quotebr.js"></script></small>
 		<small><script type="text/javascript" src="http://www.brainyquote.com/link/quotefu.js"></script></small>
+		<!-- <script src="/vendor/bootstrap/js/bootstrap.min.js"></script> -->
 	</footer>
 </html>

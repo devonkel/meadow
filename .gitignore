@@ -2,3 +2,4 @@
 node_modules
 nodex*
 .DS_Store
+credentials.js
