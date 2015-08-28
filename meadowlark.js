@@ -90,16 +90,34 @@ app.get('/newsletter', function(req, res){
 });
 
 app.post('/process', function(req, res){
-	console.log('Form (from querystring): ' + req.query.form);
-	console.log('CSRF token (from hidden form field): ' + req.body._csrf);
-	console.log('Name (from visible form field): ' + req.body.name);
-	console.log('Email (from visible form field): ' + req.body.email);
-	if(req.xhr || req.accepts('json,html')==='json'){
-    // if there were an error, we would send { error: 'error description' }
-		res.send({ success: true }); } else {
-    // if there were an error, we would redirect to an error page
-    res.redirect(303, '/thank-you');
-  }
+	var rqForm = req.query.form,
+			rqName = req.body.name,
+			rqEmail = req.body.email,
+			rqCsrf = req.body._csrf;
+	console.log('Form (from querystring): ' + rqForm);
+	console.log('CSRF token (from hidden form field): ' + rqCsrf);
+	console.log('Name (from visible form field): ' + rqName);
+	console.log('Email (from visible form field): ' + rqEmail);
+
+	if(! validEmail(rqEmail)) {
+		if(req.xhr) return res.json({ error: 'Invalid name email address.' });
+		req.session.flash = {
+      type: 'danger',
+      intro: 'Validation error!',
+      message: 'The email address you entered was not valid.'
+		};
+		return res.redirect(303, '/newsletter');
+	}
+	else {
+		if(req.xhr || req.accepts('json,html')==='json'){
+	  	// if there were an error, we would send { error: 'error description' }
+			res.send({ success: true });
+		}
+		else {
+	  	// if there were an error, we would redirect to an error page
+	  	res.redirect(303, '/thank-you');
+		}
+	}
 });
 
 app.use(function(req, res, next) {
@@ -107,6 +125,19 @@ app.use(function(req, res, next) {
         req.query.test === '1';
     next();
 });
+
+app.use(function(req, res, next){
+	// if there's a flash message, transfer
+	// it to the context, then clear it
+	res.locals.flash = req.session.flash;
+	delete req.session.flash;
+	next();
+});
+
+function validEmail(email) {
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(email);
+}
 
 function getWeatherData(){
   return {
