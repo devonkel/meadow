@@ -2,6 +2,7 @@ var express = require('express'),
 		jqupload = require('jquery-file-upload-middleware'),
     fortune = require("./lib/fortune.js"),
 		// bootstrap = require('bootstrap'),
+		nodemailer = require('nodemailer'),
 		bodyParser = require('body-parser');
 		// cookieParser = require('cookie-parser');
 
@@ -27,10 +28,25 @@ app.set('port', process.env.PORT || 3100);
 
 app.use(express.static(__dirname + '/public'));
 
-// app.use(require('cookie-parser')(credentials.cookieSecret));
-// app.use(cookieParser(credentials.cookieSecret));
+var mailTransport = nodemailer.createTransport('SMTP',{
+	service: 'Gmail',
+  auth: {
+  	user: credentials.gmail.user,
+  	pass: credentials.gmail.password,
+	}
+});
 
-// app.use(require('express-session')());
+// // Mail Transport Template
+// var mailTransport = nodemailer.createTransport('SMTP',{
+// 	host: 'smtp.meadowlarktravel.com',
+// 	secureConnection: true, // use SSL
+// 	port: 465,
+//   auth: {
+//     user: credentials.meadowlarkSmtp.user,
+//     pass: credentials.meadowlarkSmtp.password,
+// 	}
+// });
+
 app.use(session({
   secret: credentials.cookieSecret,
   resave: false,
@@ -109,6 +125,18 @@ app.post('/process', function(req, res){
 		return res.redirect(303, '/newsletter');
 	}
 	else {
+		mailTransport.sendMail({
+			from: '"Meadowlark Travel" <info@meadowlarktravel.com>',
+			to: 'devon.kelly3@gmail.com',
+			subject: 'Your Meadowlark Travel Tour',
+			text: rqName + '\n\nThank you for booking your trip with Meadowlark Travel. ' +
+						'We look forward to your visit!' +
+						'\nWe have registered ' + rqEmail + ' for the newsletter.' +
+						'\n\nWelcome to the Meadowlark Travel Newsletter,' +
+						'\nMeadowlark Travel',
+		}, function(err){
+			if(err) console.error( 'Unable to send email: ' + err );
+		});
 		if(req.xhr || req.accepts('json,html')==='json'){
 	  	// if there were an error, we would send { error: 'error description' }
 			res.send({ success: true });
