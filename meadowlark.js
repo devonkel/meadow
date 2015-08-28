@@ -129,11 +129,13 @@ app.post('/process', function(req, res){
 			from: '"Meadowlark Travel" <info@meadowlarktravel.com>',
 			to: 'devon.kelly3@gmail.com',
 			subject: 'Your Meadowlark Travel Tour',
-			text: rqName + '\n\nThank you for booking your trip with Meadowlark Travel. ' +
-						'We look forward to your visit!' +
-						'\nWe have registered ' + rqEmail + ' for the newsletter.' +
-						'\n\nWelcome to the Meadowlark Travel Newsletter,' +
-						'\nMeadowlark Travel',
+			html: '<h1>Meadowlark Travel</h1>' + rqName + ',' +
+						'</br>\<p>Thank you for booking your trip with Meadowlark Travel. ' +
+						'<b>We look forward to your visit!</b>' +
+						'</br><p>We have registered ' + rqEmail + ' for the newsletter.' +
+						'<p>Welcome to the <b>Meadowlark Travel Newsletter</b>,' +
+						'</br>Meadowlark Travel',
+			generateTextFromHtml: true,
 		}, function(err){
 			if(err) console.error( 'Unable to send email: ' + err );
 		});
